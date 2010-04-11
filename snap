@@ -1,0 +1,14 @@
+#!/bin/sh
+# one command to copy all source files from development directory to another ready for .tar.gz'ing etc.
+
+cp ../DEVEL/*.[ch] .
+cp ../DEVEL/README .
+cp ../DEVEL/LICENSE .
+cp ../DEVEL/Makefile .
+
+if [ "$1" = "bin" ]; then
+   # Build binary and remove all source code
+   make
+   rm *.[cho]
+   rm Makefile
+fi
