@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if [ $# -ne 2 ]; then
+    echo "Usage : $0 seconds command"
+    exit
+fi
+
+$2 &
+sleep $1
+
+if [ `ps --pid $! | grep $! | wc -l` -eq 1 ]; then
+    kill $!
+    echo "Killing $!"
+else
+    echo "Process exited in time"
+fi
