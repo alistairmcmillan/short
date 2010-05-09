@@ -1,3 +1,7 @@
 #!/bin/sh
 
-grep -r "#define $1" *.[ch]
+if [ $# -ne 1 ]; then
+    echo Specify something to grep for.
+    exit
+fi
+grep -r "#define " *.[ch] | grep $1
