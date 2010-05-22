@@ -6,9 +6,18 @@ cp ../DEVEL/README .
 cp ../DEVEL/LICENSE .
 cp ../DEVEL/Makefile .
 
+if [ "$2" != "gui" ]; then
+    rm gui*
+    cp ../DEVEL/Makefile .
+else
+    cp ../DEVEL/Makefile.gui Makefile
+fi
+
 if [ "$1" = "bin" ]; then
    # Build binary and remove all source code
    make
    rm *.[cho]
+   rm -f hc.make.cli
+   rm -f hc.make.gui
    rm Makefile
 fi
