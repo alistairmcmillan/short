@@ -97,7 +97,9 @@ int main(int argc, char *argv[])
 	  fgets(buf,64,fr);
 	}
 	clean(buf);
-	printf("%s %s%c",i==start ? "The" : "the",buf,argc==i+1 ? '.' : ' ');
+	if (argv[i-1][0]!='a')
+	  printf("%s ",i==start ? "The" : "the");
+	printf("%s%c",buf,argc==i+1 ? '.' : ' ');
 	fclose(fr);
 	break;
 
@@ -160,7 +162,7 @@ int main(int argc, char *argv[])
 	  fgets(buf,64,fr);
 	}
 	clean(buf);
-	printf("%s%c",buf,argc==i+1 ? '.' : ' ');
+	printf("%s %s%c",i==start ? "The" : "the",buf,argc==i+1 ? '.' : ' ');
 	fclose(fr);
 	break;
 
