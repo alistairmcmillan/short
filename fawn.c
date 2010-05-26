@@ -45,7 +45,7 @@ This software and database is being provided to you, the LICENSEE, by Princeton 
 
 void usage()
 {
-  printf("Usage : fawn [COUNT] WORD_TYPE_1 WORD_TYPE_2 ... WORD_TYPE_N\n  Where COUNT is an optional argument specifying how many sentences to generate and WORD_TYPE is one of : n v b a for noun, verb, adverb and adjective respectively.\nFawn will then print a sentence obeying the model given.\n\nCurrently the engine is extremely limited, so do not expect this to yield correct sentences every time and for every model. A recommended example model is n b v n (adjectives need more work).\n");
+  printf("Usage : fawn [COUNT] WORD_TYPE_1 WORD_TYPE_2 ... WORD_TYPE_N\n  Where COUNT is an optional argument specifying how many sentences to generate and WORD_TYPE is one of : n v b a for noun, verb, adverb and adjective respectively.\nFawn will then print a sentence obeying the model given.\n\nCurrently the engine is extremely limited, so do not expect this to yield correct sentences every time and for every model. A recommended example model is a n b v a n.\n");
 }
 
 
