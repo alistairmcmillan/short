@@ -45,7 +45,7 @@ This software and database is being provided to you, the LICENSEE, by Princeton 
 
 void usage()
 {
-  printf("Usage : fawn WORD_TYPE_1 WORD_TYPE_2 ... WORD_TYPE_N\n  where WORD_TYPE is one of : n v b a for noun, verb, adverb and adjective respectively.\nFawn will then print a sentence obeying the model given.\n\nCurrently the engine is extremely limited, so do not expect this to yield correct sentences every time and for every model. A recommended example model is n b v n (adjectives need more work).\n");
+  printf("Usage : fawn [COUNT] WORD_TYPE_1 WORD_TYPE_2 ... WORD_TYPE_N\n  Where COUNT is an optional argument specifying how many sentences to generate and WORD_TYPE is one of : n v b a for noun, verb, adverb and adjective respectively.\nFawn will then print a sentence obeying the model given.\n\nCurrently the engine is extremely limited, so do not expect this to yield correct sentences every time and for every model. A recommended example model is n b v n (adjectives need more work).\n");
 }
 
 
@@ -69,92 +69,108 @@ int main(int argc, char *argv[])
     usage();
     return 1;
   }
-  unsigned int i = 1, j;
-  unsigned int random;
-  char buf[BUF_LEN];
-  FILE *fr;
-  for (; i<argc; i++)
+  char start = 1;
+  unsigned int loop = 1;
+  if (isdigit(argv[1][0]))
   {
-    switch (argv[i][0])
-    {
-    case 'n':
-      random = rand() % NOUNS;
-      fr = fopen("fawn.nouns","r");
-      if (!fr)
-	exit(2);
-      for (j = 0; j < random; j++)
-      {
-	fgets(buf,64,fr);
-      }
-      clean(buf);
-      printf("%s %s%c",i==1 ? "The" : "the",buf,argc==i+1 ? '.' : ' ');
-      fclose(fr);
-      break;
-
-    case 'v':
-      random = rand() % VERBS;
-      fr = fopen("fawn.verbs","r");
-      if (!fr)
-	exit(2);
-      for (j = 0; j < random; j++)
-      {
-	fgets(buf,64,fr);
-      }
-      clean(buf);
-      char mwords = 0;
-      for (j = 0; j < strlen(buf); j++)
-      {
-	if (buf[j]!=' ')
-	  printf("%c",buf[j]);
-	else
-	{
-	  mwords = 1;
-	  if (buf[j-1]=='e')
-	    printf("d ");
-	  else
-	    printf("ed ");
-	}
-      }
-      if (!mwords)
-      {
-	if (buf[j-1]=='e')
-	  printf("d");
-	else
-	  printf("ed");
-      }
-      printf("%c",argc==i+1 ? '.' : ' ');
-      fclose(fr);
-      break;
-
-    case 'b':
-      random = rand() % ADVS;
-      fr = fopen("fawn.advs","r");
-      if (!fr)
-	exit(2);
-      for (j = 0; j < random; j++)
-      {
-	fgets(buf,64,fr);
-      }
-      clean(buf);
-      printf("%s%c",buf,argc==i+1 ? '.' : ' ');
-      fclose(fr);
-      break;
-
-    case 'a':
-      random = rand() % ADJS;
-      fr = fopen("fawn.adjs","r");
-      if (!fr)
-	exit(2);
-      for (j = 0; j < random; j++)
-      {
-	fgets(buf,64,fr);
-      }
-      clean(buf);
-      printf("%s%c",buf,argc==i+1 ? '.' : ' ');
-      fclose(fr);
-      break;
-    }
+    loop = atoi(argv[1]);
+    start++;
   }
-  printf("\n");
+  unsigned int m = 0;
+  for (; m < loop; m++)
+  {
+    unsigned int i = start, j;
+    unsigned int random;
+    char buf[BUF_LEN];
+    FILE *fr;
+    for (; i<argc; i++)
+    {
+      switch (argv[i][0])
+      {
+      case 'n':
+	random = rand() % NOUNS;
+	fr = fopen("fawn.nouns","r");
+	if (!fr)
+	  exit(2);
+	for (j = 0; j < random; j++)
+	{
+	  fgets(buf,64,fr);
+	}
+	clean(buf);
+	printf("%s %s%c",i==start ? "The" : "the",buf,argc==i+1 ? '.' : ' ');
+	fclose(fr);
+	break;
+
+      case 'v':
+	random = rand() % VERBS;
+	fr = fopen("fawn.verbs","r");
+	if (!fr)
+	  exit(2);
+	for (j = 0; j < random; j++)
+	{
+	  fgets(buf,64,fr);
+	}
+	clean(buf);
+	char mwords = 0;
+	for (j = 0; j < strlen(buf); j++)
+	{
+	  if (buf[j]!=' ')
+	    printf("%c",buf[j]);
+	  else
+	  {
+	    mwords = 1;
+	    if (buf[j-1]=='e')
+	      printf("d ");
+	    else
+	      printf("ed ");
+	  }
+	}
+	if (!mwords)
+	{
+	  if (buf[j-1]=='e')
+	    printf("d");
+	  else
+	    printf("ed");
+	}
+	printf("%c",argc==i+1 ? '.' : ' ');
+	fclose(fr);
+	break;
+
+      case 'b':
+	random = rand() % ADVS;
+	fr = fopen("fawn.advs","r");
+	if (!fr)
+	  exit(2);
+	for (j = 0; j < random; j++)
+	{
+	  fgets(buf,64,fr);
+	}
+	clean(buf);
+	printf("%s%c",buf,argc==i+1 ? '.' : ' ');
+	fclose(fr);
+	break;
+
+      case 'a':
+	random = rand() % ADJS;
+	fr = fopen("fawn.adjs","r");
+	if (!fr)
+	  exit(2);
+	for (j = 0; j < random; j++)
+	{
+	  fgets(buf,64,fr);
+	}
+	clean(buf);
+	printf("%s%c",buf,argc==i+1 ? '.' : ' ');
+	fclose(fr);
+	break;
+
+      default:
+	printf("\nError : %c is not a valid word type.\n",argv[i][0]);
+	return 3;
+	break;
+      }
+    }
+    printf("\n");
+  }
   return 0;
 }
