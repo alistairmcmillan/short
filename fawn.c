@@ -33,10 +33,10 @@ This software and database is being provided to you, the LICENSEE, by Princeton 
 /*
   Generate these with awk 'END { print NR }' and the fawn.* files
  */
-#define ADVS 4510
-#define ADJS 21508
-#define VERBS 11558
-#define NOUNS 117827
+#define ADVS 4481
+#define ADJS 21479
+#define VERBS 11529
+#define NOUNS 117798
 
 #define BUF_LEN 64
 
