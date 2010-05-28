@@ -1,6 +1,8 @@
 #ifndef MIME_EXT_H
 #define MIME_EXT_H
 
+#define MIME_EXTS 202
+
 const char *mime_ext[][2] = {
   {"stl","application/SLA"},
   {"step","application/STEP"},
