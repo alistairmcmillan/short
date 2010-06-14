@@ -1,0 +1,111 @@
+#!/usr/bin/env python
+# Utility to recursively remove all useless files and trash directories in the specified path.
+# This has been very largely inspired by the Rockbox (rockbox.org) disktidy plugin which is (c) 2005 by David Dent.
+# This is (c) 2010, Jan Dlabal (http://houbysoft.com) and may be used under the GNU GPL version 3 license.
+
+
+import sys,os,getopt,re
+
+
+trashfiles = [
+    r'\Adesktop\.ini\Z',
+    r'\AThumbs\.db\Z',
+    r'\A\.DS_Store',
+    r'\A.+~\Z',
+    r'\A\._.*\Z',
+    r'\A\.dolphinview\Z',
+    r'\A\.d3lphinview\Z'
+    ]
+
+trashdirs = [
+    r'\ARecycled\Z',
+    r'\A\$RECYCLE\.BIN\Z',
+    r'\ASystem Volume Information\Z',
+    r'\A\.Trashes\Z',
+    r'\A\.Trash-.*\Z'
+    ]
+
+filescombined = "(" + ")|(".join(trashfiles) + ")"
+dirscombined = "(" + ")|(".join(trashdirs) + ")"
+
+usage = "Usage:\ntidy [-v] [-s] [-p] PATH\n  PATH is the root to search in\n  -v : verbose  \n  -s : simulate, do not really delete\n  -p : prompt before deleting, implies verbose\ntidy is (c) Jan Dlabal (http://houbysoft.com), 2010. tidy is largely inspired by the Rockbox (http://rockbox.org) disktidy plugin by David Dent, (c) 2005."
+
+
+class Tidy():
+    def __init__(self,path,simulate,verbose,prompt):
+        self.path = path
+        self.simulate = simulate
+        self.verbose = verbose
+        self.prompt = prompt
+        self.trashedfiles = 0
+        self.trasheddirs = 0
+        if self.prompt == True:
+            self.verbose = True
+
+    def walk(self,path=None):
+        if not path:
+            path = self.path
+        if os.path.isdir(path):
+            l = os.listdir(path)
+            self.dircheck(path)
+            for element in l:
+                self.walk(path+"/"+element)
+        else:
+            self.filecheck(path)
+
+    def dircheck(self,path):
+        dname = path[path.rfind('/')+1:]
+        if re.match(dirscombined, dname):
+            if self.verbose:
+                print path
+            if self.prompt:
+                if raw_input("Enter y to delete directory "+path+" : ").lower() != 'y':
+                    return
+            if not self.simulate:
+                os.system("rm -rf "+path)
+            self.trasheddirs += 1
+
+    def filecheck(self,path):
+        fname = path[path.rfind('/')+1:]
+        if re.match(filescombined, fname):
+            if self.verbose:
+                print path
+            if self.prompt:
+                if raw_input("Enter y to delete file "+path+" : ").lower() != 'y':
+                    return
+            if not self.simulate:
+                os.system("rm "+path)
+            self.trashedfiles += 1
+
+
+def main():
+    simulate = False
+    verbose = False
+    prompt = False
+    try:
+        opts, args = getopt.getopt(sys.argv[1:],"vsp")
+    except getopt.GetoptError, err:
+        print str(err)
+        print usage
+        sys.exit(1)
+    if len(args)!=1:
+        print "You must specify PATH."
+        print usage
+        sys.exit(1)
+    for o, a in opts:
+        if o == "-s":
+            simulate = True
+        elif o == "-v":
+            verbose = True
+        elif o == "-p":
+            prompt = True
+        else:
+            print usage
+            sys.exit(1)
+    tidy = Tidy(args[0],simulate,verbose,prompt)
+    tidy.walk()
+    print "Cleaned "+repr(tidy.trasheddirs)+" directories and "+repr(tidy.trashedfiles)+" files."
+
+
+if __name__ == "__main__":
+    main()
