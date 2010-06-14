@@ -20,6 +20,7 @@ trashfiles = [
 trashdirs = [
     r'\ARecycled\Z',
     r'\A\$RECYCLE\.BIN\Z',
+    r'\A\$Recycle.Bin\Z',
     r'\ASystem Volume Information\Z',
     r'\A\.Trashes\Z',
     r'\A\.Trash-.*\Z'
@@ -29,6 +30,9 @@ filescombined = "(" + ")|(".join(trashfiles) + ")"
 dirscombined = "(" + ")|(".join(trashdirs) + ")"
 
 usage = "Usage:\ntidy [-v] [-s] [-p] PATH\n  PATH is the root to search in\n  -v : verbose  \n  -s : simulate, do not really delete\n  -p : prompt before deleting, implies verbose\ntidy is (c) Jan Dlabal (http://houbysoft.com), 2010. tidy is largely inspired by the Rockbox (http://rockbox.org) disktidy plugin by David Dent, (c) 2005."
+
+def shellquote(s):
+    return "'" + s.replace("'", "'\\''") + "'"
 
 
 class Tidy():
@@ -62,7 +66,7 @@ class Tidy():
                 if raw_input("Enter y to delete directory "+path+" : ").lower() != 'y':
                     return
             if not self.simulate:
-                os.system("rm -rf "+path)
+                os.system("rm -rf "+shellquote(path))
             self.trasheddirs += 1
 
     def filecheck(self,path):
@@ -74,7 +78,7 @@ class Tidy():
                 if raw_input("Enter y to delete file "+path+" : ").lower() != 'y':
                     return
             if not self.simulate:
-                os.system("rm "+path)
+                os.system("rm -f "+shellquote(path))
             self.trashedfiles += 1
 
 
