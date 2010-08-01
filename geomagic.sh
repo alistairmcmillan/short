@@ -1,16 +1,29 @@
-#!/bin/bash
+#!/bin/sh
 
-PATH=/media/07E8-0003/GPX/
+if [ -n "$3" ]; then
+    GPXPATH="$3/"
+else
+    GPXPATH=/media/07E8-0003/GPX/
+fi
+
 TMPNAME=$RANDOM
-while [ -e $PATH$TMPNAME.gpx ]; do
-	TMPNAME=$TMPNAME$RANDOM 
+
+while [ -e $GPXPATH$TMPNAME.gpx ]; do
+    TMPNAME=$TMPNAME$RANDOM
 done
+
 TMPNAME=$TMPNAME.gpx
-/usr/bin/gpsbabel -i geo -f "$1" -o gpx -F "$PATH$TMPNAME"
-/bin/rm "$1"
-/bin/sed -i 's/<name>/<x>/g' "$PATH$TMPNAME"
-/bin/sed -i 's/<\/name>/<\/x>/g' "$PATH$TMPNAME"
-/bin/sed -i 's/<cmt>/<name>/g' "$PATH$TMPNAME"
-/bin/sed -i 's/<\/cmt>/<\/name>/g' "$PATH$TMPNAME"
-/bin/sed -i 's/<x>/<cmt>/g' "$PATH$TMPNAME"
-/bin/sed -i 's/<\/x>/<\/cmt>/g' "$PATH$TMPNAME"
+echo $TMPNAME
+
+gpsbabel -i geo -f "$1" -o gpx -F "$GPXPATH$TMPNAME"
+rm "$1"
+sed -i 's/<name>/<x>/g' "$GPXPATH$TMPNAME"
+sed -i 's/<\/name>/<\/x>/g' "$GPXPATH$TMPNAME"
+sed -i 's/<cmt>/<name>/g' "$GPXPATH$TMPNAME"
+sed -i 's/<\/cmt>/<\/name>/g' "$GPXPATH$TMPNAME"
+sed -i 's/<x>/<cmt>/g' "$GPXPATH$TMPNAME"
+sed -i 's/<\/x>/<\/cmt>/g' "$GPXPATH$TMPNAME"
+
+if [ -n "$2" ]; then
+    sed -i "s/<\/desc>/ $2<\/desc>/g" "$GPXPATH$TMPNAME"
+fi
