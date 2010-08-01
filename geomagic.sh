@@ -3,7 +3,7 @@
 if [ -n "$3" ]; then
     GPXPATH="$3/"
 else
-    GPXPATH=/media/07E8-0003/GPX/
+    GPXPATH=/mnt/5/GPX/
 fi
 
 TMPNAME=$RANDOM
