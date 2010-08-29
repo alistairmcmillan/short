@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ -n "$3" ]; then
     GPXPATH="$3/"

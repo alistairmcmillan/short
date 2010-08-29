@@ -11,6 +11,7 @@ if [ "$2" != "gui" ]; then
     cp ../DEVEL/Makefile .
 else
     cp ../DEVEL/Makefile.gui Makefile
+    rm main.c
 fi
 
 if [ "$1" = "bin" ]; then
