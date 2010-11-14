@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 # (c) Jan Dlabal, 2010
 # http://houbysoft.com/
 # Provided under the GNU GPL v3 License; feel free to improve.
