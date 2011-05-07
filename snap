@@ -4,21 +4,33 @@
 cp ../DEVEL/*.[ch] .
 cp ../DEVEL/README .
 cp ../DEVEL/LICENSE .
-cp ../DEVEL/Makefile .
+mkdir qtgui
+cp ../DEVEL/qtgui/*.[ch]pp qtgui/
+cp ../DEVEL/qtgui/hcg.rc qtgui/
+cp ../DEVEL/qtgui/qtgui.pro qtgui/
 
 if [ "$2" != "gui" ]; then
-    rm gui*
+    rm -r qtgui/
     cp ../DEVEL/Makefile .
 else
-    cp ../DEVEL/Makefile.gui Makefile
     rm main.c
 fi
 
 if [ "$1" = "bin" ]; then
+   if [ "$2" != "gui" ]; then
    # Build binary and remove all source code
-   make
-   rm *.[cho]
-   rm -f hc.make.cli
-   rm -f hc.make.gui
-   rm Makefile
+       make
+       rm *.[cho]
+       rm -f hc.make.cli
+       rm -f hc.make.gui
+       rm Makefile
+   else
+       cd qtgui
+       qmake
+       make
+       mv HCG ..
+       cd ..
+       rm -r qtgui
+       rm *.[cho]
+   fi
 fi
