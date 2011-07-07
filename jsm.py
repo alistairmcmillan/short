@@ -5,20 +5,20 @@
 # http://houbysoft.com/
 # Provided under the GNU GPL v3 License.
 
-from sys import argv
+from sys import argv, stdin
 from email.mime.text import MIMEText
 import smtplib
 from DNS.lazy import mxlookup
 
-if len(argv) != 5:
-  print("Usage : " + argv[0] +" FROM TO SUBJECT MESSAGE")
+if len(argv) != 4:
+  print("Usage : " + argv[0] +" FROM TO SUBJECT")
   print(" FROM is the email address to send from")
   print(" TO is the email address to send to")
   print(" SUBJECT is the email's subject")
-  print(" MESSAGE is the message to send")
+  print("The message itself is read from stdin (type something, then press Ctrl-D, or use a pipe, etc.)")
   print("\nThis program is (c) Jan Dlabal, 2011, and is available under the terms of the GNU GPL v3 License.")
 else:
-  msg = MIMEText(argv[4])
+  msg = MIMEText(stdin.read())
   msg['Subject'] = argv[3]
   msg['To'] = argv[2]
   msg['From'] = argv[1]
