@@ -59,13 +59,12 @@ diff -Naur src-orig/plctrl.c src/plctrl.c
 diff -Naur src-orig/plsym.c src/plsym.c
 --- src-orig/plsym.c	2011-10-12 20:43:01.000000000 -0400
 +++ src/plsym.c	2011-10-28 20:36:07.000000000 -0400
-@@ -41,6 +41,9 @@
+@@ -41,6 +41,8 @@
  #include <float.h>
  #include <ctype.h>
  #include "plhershey-unicode.h"
 +#include "jan-plsym.h"
 +
-+#define meh_the_universe printf
  
  // Declarations
  
