@@ -32,6 +32,9 @@ public:
     double &operator[](unsigned int x) {
         return coords[x];
     }
+    bool operator==(const Point &rhs) {
+        return coords[0] == rhs.coords[0] && coords[1] == rhs.coords[1] && coords[2] == rhs.coords[2];
+    }
 };
 
 
