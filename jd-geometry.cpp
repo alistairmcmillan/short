@@ -3,6 +3,13 @@
 
 namespace JD {
 
+    double Point::distance(Point a, Point b) {
+        return sqrt(pow(a[0]-b[0],2)+
+                    pow(a[1]-b[1],2)+
+                    pow(a[2]-b[2],2));
+    }
+
+
     Vector::Vector(double x, double y, double z):Point(x,y,z) {
     }
     
