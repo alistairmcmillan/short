@@ -57,7 +57,14 @@ namespace JD {
     
     
     double Vector::dotProduct(Vector u, Vector v) {
-        return u[0] * v[0] + u[1] * v[1] * u[2] * v[2];
+        return u[0] * v[0] + u[1] * v[1] + u[2] * v[2];
+    }
+
+
+    double Vector::cosineSimilarity(Vector u, Vector v) {
+        u.normalize();
+        v.normalize();
+        return dotProduct(u,v);
     }
     
     

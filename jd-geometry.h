@@ -52,6 +52,7 @@ namespace JD {
         static Vector crossProduct(Vector u, Vector v);
         static Vector crossProduct(Point a, Point b, Point c);
         static double dotProduct(Vector u, Vector v);
+        static double cosineSimilarity(Vector u, Vector v);
     };
     
     
