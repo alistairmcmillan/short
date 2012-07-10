@@ -2,7 +2,10 @@
 #define JD_GEOMETRY_H
 
 namespace JD {
-    
+    class Point;
+    class Vector;
+    class Quaternion;
+
     class Point {
     protected:
         double coords[3];
@@ -19,9 +22,9 @@ namespace JD {
             setZ(0);
         }
         ~Point() {};
-        double x() {return coords[0];};
-        double y() {return coords[1];};
-        double z() {return coords[2];};
+        double &x() {return coords[0];};
+        double &y() {return coords[1];};
+        double &z() {return coords[2];};
         void setX(double x) {
             coords[0] = x;
         };
@@ -37,7 +40,11 @@ namespace JD {
         bool operator==(const Point &rhs) {
             return coords[0] == rhs.coords[0] && coords[1] == rhs.coords[1] && coords[2] == rhs.coords[2];
         }
+        friend Point operator*(Point a, double f);
+        friend Point operator*(double f, Point a);
+        Point &operator*=(const double f);
         static double distance(Point a, Point b);
+        Point translate(Vector v);
     };
     
     

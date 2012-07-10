@@ -10,6 +10,31 @@ namespace JD {
     }
 
 
+    Point Point::translate(Vector v) {
+        return Point(this->x() + v.x(),
+                     this->y() + v.y(),
+                     this->z() + v.z());
+    }
+
+
+    Point operator*(Point a, double f) {
+        a *= f;
+        return a;
+    }
+
+
+    Point operator*(double f, Point a) {
+        return a * f;
+    }
+
+
+    Point &Point::operator*=(double f) {
+        this->x() *= f;
+        this->y() *= f;
+        this->z() *= f;
+        return *this;
+    }
+
     Vector::Vector(double x, double y, double z):Point(x,y,z) {
     }
     
