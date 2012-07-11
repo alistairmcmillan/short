@@ -10,6 +10,13 @@ namespace JD {
     }
 
 
+    Point Point::midpoint(Point a, Point b) {
+        return Point((a[0]+b[0]) / 2.0,
+                     (a[1]+b[1]) / 2.0,
+                     (a[2]+b[2]) / 2.0);
+    }
+
+
     Point Point::translate(Vector v) {
         return Point(this->x() + v.x(),
                      this->y() + v.y(),
@@ -90,6 +97,34 @@ namespace JD {
         u.normalize();
         v.normalize();
         return dotProduct(u,v);
+    }
+
+
+    Vector &Vector::operator+=(const Vector other) {
+        this->x() += other.x();
+        this->y() += other.y();
+        this->z() += other.z();
+        return *this;
+    }
+
+
+    Vector &Vector::operator-=(const Vector other) {
+        this->x() -= other.x();
+        this->y() -= other.y();
+        this->z() -= other.z();
+        return *this;
+    }
+
+
+    Vector operator+(Vector u, Vector v) {
+        u += v;
+        return u;
+    }
+
+
+    Vector operator-(Vector u, Vector v) {
+        u -= v;
+        return u;
     }
     
     

@@ -25,6 +25,9 @@ namespace JD {
         double &x() {return coords[0];};
         double &y() {return coords[1];};
         double &z() {return coords[2];};
+        double x() const {return coords[0];};
+        double y() const {return coords[1];};
+        double z() const {return coords[2];};
         void setX(double x) {
             coords[0] = x;
         };
@@ -44,6 +47,7 @@ namespace JD {
         friend Point operator*(double f, Point a);
         Point &operator*=(const double f);
         static double distance(Point a, Point b);
+        static Point midpoint(Point a, Point b);
         Point translate(Vector v);
     };
     
@@ -60,6 +64,10 @@ namespace JD {
         static Vector crossProduct(Point a, Point b, Point c);
         static double dotProduct(Vector u, Vector v);
         static double cosineSimilarity(Vector u, Vector v);
+        Vector &operator+=(const Vector other);
+        Vector &operator-=(const Vector other);
+        friend Vector operator+(Vector u, Vector v);
+        friend Vector operator-(Vector u, Vector v);
     };
     
     
