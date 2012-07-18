@@ -42,6 +42,7 @@ namespace JD {
         return *this;
     }
 
+
     Vector::Vector(double x, double y, double z):Point(x,y,z) {
     }
     
@@ -159,6 +160,55 @@ namespace JD {
         t.y = r.w * q.y + r.x * q.z + r.y * q.w - r.z * q.x;
         t.z = r.w * q.z - r.x * q.y + r.y * q.x + r.z * q.w;
         return t;
+    }
+
+
+    Quaternion getRotationTo(JD::Vector src, JD::Vector dest) {
+        JD::Quaternion q;
+        
+        double d = JD::Vector::dotProduct(src, dest);
+        
+        if (d >= 1.0f)
+        {
+            q.x = q.y = q.z = 0;
+            q.w = 1;
+            return q;
+        }
+        
+        if (d < (1e-6f - 1.0f))
+        {
+            // Generate an axis
+            JD::Vector tmp(1,0,0);
+            JD::Vector axis = JD::Vector::crossProduct(tmp, src);
+            
+            if (axis.norm() == 0.0f)
+            {
+                tmp[0] = 0;
+                tmp[1] = 1;
+                tmp[2] = 0;
+                axis = JD::Vector::crossProduct(tmp, src);
+            }
+            
+            axis.normalize();
+            
+            q.x = axis[0]; // ( * sin(pi/2) ) which is 1
+            q.y = axis[1];
+            q.z = axis[2];
+            q.w = 0; // ( cos(pi/2) which is 0
+        } else {
+            double s = sqrt((1 + d) * 2.0);
+            double invs = 1.0 / s;
+            
+            JD::Vector c = JD::Vector::crossProduct(src, dest);
+            
+            q.x = (float)(c[0] * invs);
+            q.y = (float)(c[1] * invs);
+            q.z = (float)(c[2] * invs);
+            q.w = (float)(s * 0.5);
+            q.normalize();
+        }
+        
+        return q;
     }
 
 }
