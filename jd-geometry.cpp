@@ -163,7 +163,7 @@ namespace JD {
     }
 
 
-    Quaternion getRotationTo(JD::Vector src, JD::Vector dest) {
+    Quaternion Quaternion::getRotationTo(JD::Vector src, JD::Vector dest) {
         JD::Quaternion q;
         
         double d = JD::Vector::dotProduct(src, dest);

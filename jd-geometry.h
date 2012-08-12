@@ -88,7 +88,7 @@ namespace JD {
         double norm();
         void normalize();
         friend Quaternion operator*(Quaternion q, Quaternion r);
-        friend Quaternion getRotationTo(JD::Vector src, JD::Vector dest);
+        static Quaternion getRotationTo(JD::Vector src, JD::Vector dest);
         Quaternion conjugate();
     };
     
