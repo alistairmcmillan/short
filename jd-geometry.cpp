@@ -35,6 +35,17 @@ namespace JD {
     }
 
 
+    Vector operator*(Vector v, double d) {
+        v *= d;
+        return v;
+    }
+
+
+    Vector operator*(double d, Vector v) {
+        return v * d;
+    }
+
+
     Point &Point::operator*=(double f) {
         this->x() *= f;
         this->y() *= f;
@@ -62,8 +73,36 @@ namespace JD {
         coords[1] /= n;
         coords[2] /= n;
     }
-    
-    
+
+
+    Vector &Vector::rotate(Vector axis, double angle) {
+        double s = sin(angle);
+        double c = cos(angle);
+        *this = this->perpendicular(axis) * c +
+                crossProduct(axis, *this) * s +
+                this->parallel(axis);
+        return *this;
+    }
+
+
+    Vector &Vector::rotate(Quaternion q) {
+        Vector vq(q.x, q.y, q.z);
+        Vector v = *this;
+        *this += 2.0*crossProduct(vq, crossProduct(vq, v) + q.w * v);
+        return *this;
+    }
+
+
+    Vector Vector::perpendicular(Vector axis) {
+        return *this - this->parallel(axis);
+    }
+
+
+    Vector Vector::parallel(Vector axis) {
+        return axis * dotProduct(*this, axis);
+    }
+
+
     Vector Vector::crossProduct(Vector u, Vector v) {
         Vector r;
         r.setX(u[1]*v[2] - u[2]*v[1]);

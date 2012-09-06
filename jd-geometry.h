@@ -53,13 +53,17 @@ namespace JD {
     
     
     class Vector: public Point {
-        
+
     public:
         Vector(double x, double y, double z);
         Vector();
         ~Vector() {};
         double norm();
         void normalize();
+        Vector &rotate(JD::Vector axis, double angle);
+        Vector &rotate(Quaternion q);
+        Vector perpendicular(JD::Vector axis);
+        Vector parallel(JD::Vector axis);
         static Vector crossProduct(Vector u, Vector v);
         static Vector crossProduct(Point a, Point b, Point c);
         static double dotProduct(Vector u, Vector v);
@@ -68,6 +72,8 @@ namespace JD {
         Vector &operator-=(const Vector other);
         friend Vector operator+(Vector u, Vector v);
         friend Vector operator-(Vector u, Vector v);
+        friend Vector operator*(Vector v, double d);
+        friend Vector operator*(double d, Vector v);
     };
     
     
