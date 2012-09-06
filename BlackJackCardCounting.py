@@ -18,6 +18,14 @@ shuffle(shoe)
 # Card counter's count
 count = 0
 
+# Assume 75% penetration
+penetrationLimit = round(0.25 * len(shoe))
+
+# Player's money and bets
+playerInitialMoney = 4227
+playerMoney = playerInitialMoney
+
+
 # Modify the count based on the card seen
 def changeCount(card):
     global count
@@ -26,3 +34,125 @@ def changeCount(card):
     elif card[1] == 1 or (card[1] >= 10 and card[1] <= 13):
         count -= 1
 
+
+# Count the totals of the player's cards. Returns an array, first is soft (ace = 11), second is hard (ace = 1)
+def countTotals(playerCards):
+    totals = [0,0]
+    for card in playerCards:
+        if card[1] == 1:
+            totals[0] += 11
+            totals[1] += 1
+        elif card[1] <= 10:
+            totals[0] += card[1]
+            totals[1] += card[1]
+        else:
+            totals[0] += 10
+            totals[1] += 10
+    return totals
+
+
+# Return the player move according to basic strategy (http://en.m.wikipedia.org/wiki/Blackjack#section_4)
+def playerMovePair(playerCard, dealerCard):
+	return "?" # todo
+
+
+# Return the player move according to basic strategy (http://en.m.wikipedia.org/wiki/Blackjack#section_4)
+def playerMoveHard(playerTotal, dealerCard):
+	return "?" # todo
+
+
+# Return the player move according to basic strategy (http://en.m.wikipedia.org/wiki/Blackjack#section_4)
+def playerMoveSoft(playerTotalWithoutAce, dealerCard):
+	if playerTotalWithoutAce >= 8:
+		return "stand"
+	elif playerTotalWithoutAce == 7:
+		if dealerCard == 2:
+			return "stand"
+		elif dealerCard >= 3 and dealerCard <= 6:
+			return "double-stand"
+		elif dealerCard == 7 or dealerCard == 8:
+			return "stand"
+		else:
+			return "hit"
+	elif playerTotalWithoutAce == 6:
+		if dealerCard == 2 or dealerCard >= 7:
+			return "hit"
+		else:
+			return "double-hit"
+	elif playerTotalWithoutAce == 4 or playerTotalWithoutAce == 5:
+		if dealerCard == 2 or dealerCard == 3 or dealerCard >= 7:
+			return "hit"
+		else:
+			return "double-hit"
+	elif playerTotalWithoutAce == 2 or playerTotalWithoutAce == 3:
+		if dealerCard == 5 or dealerCard == 6:
+			return "double-hit"
+		else:
+			return "hit"
+
+
+# Return the player move according to basic strategy (http://en.m.wikipedia.org/wiki/Blackjack#section_4)
+def playerMove(playerCards, dealerCard):
+    if len(playerCards) == 2 and playerCards[0][0] == playerCards[0][1]:
+    	return playerMovePair(playerCards[0][1], dealerCard[1])
+    else:
+        totals = countTotals(playerCards)
+        if totals[1] > 21:
+        	return "bust"
+        elif totals[0] != totals[1]:
+        	if totals[0] > 21:
+        		return playerMoveHard(totals[1], dealerCard[1])
+        	else:
+        		return playerMoveSoft(totals[0] - 11, dealerCard[1])
+        else:
+        	return playerMoveHard(totals[1], dealerCard[1])
+
+
+# Play one game of Blackjack
+def playGame(bet):
+    global shoe
+    global playerMoney
+
+    playerCards = [shoe.pop(), shoe.pop()]
+    # dealer's first card is visible to the player
+    dealerCards = [shoe.pop(), shoe.pop()]
+
+    changeCount(playerCards[0])
+    changeCount(playerCards[1])
+    changeCount(dealerCards[0])
+
+    move = playerMove(playerCards, dealerCards[0])
+    while move != "bust" and move != "stand" and move != "surrender":
+    	if move == "hit":
+    		playerCards.append(shoe.pop())
+    		changeCount(playerCards[-1])
+    	elif move == "double-hit" or move == "double-stand":
+    		pass # todo
+    	elif move == "split":
+    		pass # todo
+    	move = playerMove(playerCards, dealerCards[0])
+
+	# player now saw the dealer's second card
+	changeCount(dealerCards[1])
+
+    if move == "bust":
+    	playerMoney -= bet
+    elif move == "surrender":
+    	playerMoney -= bet / 2
+    elif move == "stand":
+    	pass # todo
+
+
+####
+
+
+# Run simulation
+while len(shoe) > penetrationLimit:
+    playGame(27) # todo : bet
+
+# Print out results
+gainOrLoss = "-"
+if playerMoney - playerInitialMoney > 0:
+    gainOrLoss = "+"
+
+print "Player's money = $" + repr(playerMoney) + " (" + gainOrLoss + "$" + repr(abs(playerInitialMoney - playerMoney)) + ")"
