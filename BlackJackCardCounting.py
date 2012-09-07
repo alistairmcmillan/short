@@ -93,7 +93,53 @@ def playerMovePair(playerCard, dealerCard):
 
 # Return the player move according to basic strategy (http://en.m.wikipedia.org/wiki/Blackjack#section_4)
 def playerMoveHard(playerTotal, dealerCard):
-    return "hit" # todo
+    if playerTotal == 21:
+        return "stand"
+    elif playerTotal >= 17 and playerTotal <= 20:
+        return "stand"
+    elif playerTotal == 16:
+        if dealerCard >= 2 and dealerCard <= 6:
+            return "stand"
+        elif dealerCard == 7 or dealerCard == 8:
+            return "hit"
+        else:
+            return "surrender"
+    elif playerTotal == 15:
+        if dealerCard >= 2 and dealerCard <= 6:
+            return "stand"
+        elif (dealerCard >= 7 and dealerCard <= 9) or dealerCard == 1:
+            return "hit"
+        else:
+            return "surrender"
+    elif playerTotal == 14 or playerTotal == 13:
+        if dealerCard >= 2 and dealerCard <= 6:
+            return "stand"
+        else:
+            return "hit"
+    elif playerTotal == 12:
+        if dealerCard == 2 or dealerCard == 3:
+            return "hit"
+        elif dealerCard <= 6 and dealerCard >= 4:
+            return "stand"
+        else:
+            return "hit"
+    elif playerTotal == 11:
+        if dealerCard == 1:
+            return "hit"
+        else:
+            return "double-hit"
+    elif playerTotal == 10:
+        if dealerCard == 1 or dealerCard >= 10:
+            return "hit"
+        else:
+            return "double-hit"
+    elif playerTotal == 9:
+        if dealerCard >= 3 and dealerCard <= 6:
+            return "double-hit"
+        else:
+            return "hit"
+    elif playerTotal >= 5 and playerTotal <= 8:
+        return "hit"
 
 
 # Return the player move according to basic strategy (http://en.m.wikipedia.org/wiki/Blackjack#section_4)
