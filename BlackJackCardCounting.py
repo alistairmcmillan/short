@@ -38,9 +38,14 @@ def changeCount(card):
 # Count the totals of the player's cards. Returns an array, first is soft (ace = 11), second is hard (ace = 1)
 def countTotals(playerCards):
     totals = [0,0]
+    countSoftAce = True
     for card in playerCards:
         if card[1] == 1:
-            totals[0] += 11
+            if countSoftAce:
+                totals[0] += 11
+                countSoftAce = False
+            else:
+                totals[0] += 1
             totals[1] += 1
         elif card[1] <= 10:
             totals[0] += card[1]
