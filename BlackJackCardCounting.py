@@ -53,7 +53,42 @@ def countTotals(playerCards):
 
 # Return the player move according to basic strategy (http://en.m.wikipedia.org/wiki/Blackjack#section_4)
 def playerMovePair(playerCard, dealerCard):
-	return "?" # todo
+	if playerCard == 1:
+	   return "split"
+	elif playerCard == 2 or playerCard == 3:
+		if dealercard >=2 and dealercard <=7:
+			return "split"
+		else:
+			return "hit"
+	elif playerCard == 4:
+		if dealercard >=5 and dealercard <=6:
+			return "split"
+		else:
+			return "hit"
+	elif playerCard == 5:
+		if dealercard >=2 and dealercard <=9:
+			return "double-hit"
+		else:
+			return "hit"
+	elif playerCard == 6:
+		if dealercard >=2 and dealercard <=6:
+			return "split"
+		else:
+			return "hit"
+	elif playerCard == 7:
+		if dealercard >=2 and dealercard <=7:
+			return "split"
+		else:
+			return "hit"
+	elif playerCard == 8:
+		return "split"
+	elif playerCard == 9:
+		if (dealercard >=2 and dealercard <=6) or (dealercard >=8 and dealercard <=9):
+			return "split"
+		else:
+			return "stand"
+	elif playerMovePair == 10 or playerMovePair == 11 or playerMovePair == 12 or playerMovePair == 13:
+		return "stand"
 
 
 # Return the player move according to basic strategy (http://en.m.wikipedia.org/wiki/Blackjack#section_4)
@@ -143,12 +178,18 @@ def playGame(bet):
     	pass # todo
 
 
+# returns the player's bet, based on the current card count
+def playerBetBasedOnCount():
+	global count
+	return 27 # todo
+
+
 ####
 
 
 # Run simulation
 while len(shoe) > penetrationLimit:
-    playGame(27) # todo : bet
+    playGame(playerBetBasedOnCount())
 
 # Print out results
 gainOrLoss = "-"
