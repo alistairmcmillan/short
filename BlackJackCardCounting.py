@@ -3,7 +3,7 @@
 # No warranty whatsoever, use at your own risk.
 # (c) Jan Dlabal (Lead Developer, C.E.O., C.T.O.), Vojtech Misak (Chief Table Manager),
 # Heike Fischer (Global Partner), Sugafren Jarnij (Russian Poet), 2012.
-# All rights reserved.
+# Licensed under the GNU GPLv3.
 # http://houbysoft.com/
 
 from random import shuffle
