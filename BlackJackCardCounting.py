@@ -7,6 +7,7 @@
 # http://houbysoft.com/
 
 from random import shuffle
+from sys import argv
 
 # Each card is represented by a tuple of the form (x,y)
 # where x = color (1-4)
@@ -378,9 +379,15 @@ def playShoe():
 ####
 
 
-# Play 100 shoes.
+if len(argv)!=2:
+    print "Usage: "+argv[0]+" X"
+    print "     X is the number of shoes to play."
+    print "     (c) Jan Dlabal, 2012."
+    exit(1)
+
+shoeCount = int(argv[1])
 x = 0
-while x < 1000:
+while x < shoeCount:
     playShoe()
     x += 1
 
