@@ -11,15 +11,15 @@ from random import shuffle
 # and y = card (1-13), 1 = Ace, 2-10 = numbers, 11 = J, 12 = Q, 13 = K
 singleDeck = sum(map(lambda color : zip([color] * 13, range(1,14)), range(1,5)), [])
 
-# Assume a 6-deck shoe
-shoe = singleDeck * 6
-shuffle(shoe)
+shoe = []
+
+decksInShoe = 6
 
 # Card counter's count
 count = 0
 
 # Assume 75% penetration
-penetrationLimit = round(0.25 * len(shoe))
+penetrationLimit = round(0.25 * 6 * 52)
 
 # Player's money and bets
 playerInitialMoney = 10000
@@ -349,6 +349,10 @@ def playerBetBasedOnCount():
     global shoe
     global baseBet
     decksInShoe = round(float(len(shoe)) / float(52))
+    if decksInShoe == 0:
+        print shoe
+        print len(shoe)
+        exit()
     trueCount = round(float(count) / float(decksInShoe));
     if trueCount > 0:
         return baseBet * trueCount
@@ -356,12 +360,27 @@ def playerBetBasedOnCount():
         return baseBet
 
 
+# run through one shoe
+def playShoe():
+    global singleDeck
+    global shoe
+    global count
+    global decksInShoe
+    count = 0
+    shoe = singleDeck * decksInShoe
+    shuffle(shoe)
+    while len(shoe) > penetrationLimit:
+        playGame(playerBetBasedOnCount())
+
+
 ####
 
 
-# Run simulation
-while len(shoe) > penetrationLimit:
-    playGame(playerBetBasedOnCount())
+# Play 100 shoes.
+x = 0
+while x < 1000:
+    playShoe()
+    x += 1
 
 # Print out results
 gainOrLoss = "-"
