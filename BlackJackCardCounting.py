@@ -31,7 +31,7 @@ playerMoney = playerInitialMoney
 
 # set to true to see everything the player/dealer does.
 # set to false to only see final ($$) result.
-verbose = False
+verbose = True
 
 # Modify the count based on the card seen
 def changeCount(card):
@@ -241,8 +241,10 @@ def whoWins(playerCards, dealerCards):
         return "player"
     elif playerFinal < dealerFinal:
         return "dealer"
-    else:
+    elif playerFinal > dealerFinal:
         return "player"
+    elif playerFinal == dealerFinal:
+        return "push"
 
 
 # Play one game of Blackjack
@@ -255,9 +257,11 @@ def playGame(bet):
 
     # player's hands
     playerHands = [[shoe.pop(), shoe.pop()]]
+    playerTotals = countTotals(playerHands[0])
     playerHandsStatus = ["new"]
     # dealer's first card is visible to the player
     dealerCards = [shoe.pop(), shoe.pop()]
+    dealerTotals = countTotals(dealerCards)
 
     if verbose:
         print "player dealt",
@@ -268,6 +272,18 @@ def playGame(bet):
     changeCount(playerHands[0][0])
     changeCount(playerHands[0][1])
     changeCount(dealerCards[0])
+
+    if playerTotals[0] == 21 and dealerTotals[0] != 21:
+        # player has blackjack -> player wins 3 to 2
+        playerHandsStatus[0] = ["bust"] # set hand to "bust" so it's ignored; money is adjusted here
+        playerMoney += float(bet) * 1.5
+    elif playerTotals[0] != 21 and dealerTotals[0] == 21:
+        # dealer has blackjack -> player loses
+        playerHandsStatus[0] = ["bust"] # set hand to "bust" so it's ignored; money is adjusted here
+        playerMoney -= bet
+    elif playerTotals[0] == dealerTotals[0] and playerTotals[0] == 21:
+        # player & dealer both have blackjack -> push
+        playerHandsStatus[0] = ["stand"]
 
     while "open" in playerHandsStatus or "new" in playerHandsStatus:
         for i in range(0,len(playerHands)):
@@ -347,18 +363,27 @@ def playGame(bet):
                     print ")"
                 playerMoney += bet
             else:
-                if whoWins(playerHands[i], dealerCards) == "player":
+                who = whoWins(playerHands[i], dealerCards)
+                if who == "player":
                     if verbose:
                         print "player wins! (",
                         print playerHands[i],
                         print ")"
                     playerMoney += bet
-                else:
+                elif who == "dealer":
                     if verbose:
                         print "player loses! (",
                         print playerHands[i],
                         print ")"
                     playerMoney -= bet
+                else:
+                    if verbose:
+                        print "push (",
+                        print playerHands[i],
+                        print "vs",
+                        print dealerCards,
+                        print ")"
+                    pass
 
 
 # returns the player's bet, based on the current card count
