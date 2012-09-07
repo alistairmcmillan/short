@@ -56,34 +56,34 @@ def playerMovePair(playerCard, dealerCard):
 	if playerCard == 1:
 	   return "split"
 	elif playerCard == 2 or playerCard == 3:
-		if dealercard >=2 and dealercard <=7:
+		if dealerCard >=2 and dealerCard <=7:
 			return "split"
 		else:
 			return "hit"
 	elif playerCard == 4:
-		if dealercard >=5 and dealercard <=6:
+		if dealerCard >=5 and dealerCard <=6:
 			return "split"
 		else:
 			return "hit"
 	elif playerCard == 5:
-		if dealercard >=2 and dealercard <=9:
+		if dealerCard >=2 and dealerCard <=9:
 			return "double-hit"
 		else:
 			return "hit"
 	elif playerCard == 6:
-		if dealercard >=2 and dealercard <=6:
+		if dealerCard >=2 and dealerCard <=6:
 			return "split"
 		else:
 			return "hit"
 	elif playerCard == 7:
-		if dealercard >=2 and dealercard <=7:
+		if dealerCard >=2 and dealerCard <=7:
 			return "split"
 		else:
 			return "hit"
 	elif playerCard == 8:
 		return "split"
 	elif playerCard == 9:
-		if (dealercard >=2 and dealercard <=6) or (dealercard >=8 and dealercard <=9):
+		if (dealerCard >=2 and dealerCard <=6) or (dealerCard >=8 and dealerCard <=9):
 			return "split"
 		else:
 			return "stand"
