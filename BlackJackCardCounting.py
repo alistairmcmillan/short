@@ -162,7 +162,12 @@ def playGame(bet):
     		playerCards.append(shoe.pop())
     		changeCount(playerCards[-1])
     	elif move == "double-hit" or move == "double-stand":
-    		pass # todo
+    		# assume doubling down is allowed
+    		bet *= 2
+    		playerCards.append(shoe.pop())
+    		changeCount(playerCards[-1])
+    		move = "stand"
+    		break
     	elif move == "split":
     		pass # todo
     	move = playerMove(playerCards, dealerCards[0])
