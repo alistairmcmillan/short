@@ -195,7 +195,7 @@ def playGame(bet):
 
     # player's hands
     playerHands = [[shoe.pop(), shoe.pop()]]
-    playerHandsStatus = ["open"]
+    playerHandsStatus = ["new"]
     # dealer's first card is visible to the player
     dealerCards = [shoe.pop(), shoe.pop()]
 
@@ -208,18 +208,17 @@ def playGame(bet):
     changeCount(playerHands[0][1])
     changeCount(dealerCards[0])
 
-    while "open" in playerHandsStatus:
+    while "open" in playerHandsStatus or "new" in playerHandsStatus:
         for i in range(0,len(playerHands)):
             playerCards = playerHands[i]
             move = playerMove(playerCards, dealerCards[0])
 
-            while playerHandsStatus[i] != "closed" and move != "bust" and move != "stand" and move != "surrender":
+            while (playerHandsStatus[i] != "closed" and move != "bust" and move != "stand" and move != "surrender") and not (playerHandsStatus[i] == "open" and move == "double-stand"):
             	print "player "+move
-                if move == "hit":
+                if move == "hit" or (playerHandsStatus[i]!="new" and move == "double-hit"):
                     playerCards.append(shoe.pop())
                     changeCount(playerCards[-1])
-                elif move == "double-hit" or move == "double-stand":
-                    # assume doubling down is allowed
+                elif playerHandsStatus[i] == "new" and (move == "double-hit" or move == "double-stand"):
                     bet *= 2
                     playerCards.append(shoe.pop())
                     changeCount(playerCards[-1])
@@ -238,6 +237,7 @@ def playGame(bet):
                     playerCards.append(card2)
                 print "player now has",
                 print playerHands
+                playerHandsStatus[i] = "open"
                 move = playerMove(playerCards, dealerCards[0])
             
             if playerHandsStatus[i] != "closed" and playerHandsStatus[i] != "stand":
@@ -253,7 +253,7 @@ def playGame(bet):
                     print ")"
                     playerHandsStatus[i] = "closed"
                     playerMoney -= bet / 2
-                elif move == "stand":
+                elif move == "stand" or move == "double-stand":
                 	playerHandsStatus[i] = "stand"
 
     # player now saw the dealer's second card
