@@ -143,6 +143,41 @@ def playerMove(playerCards, dealerCard):
         	return playerMoveHard(totals[1], dealerCard[1])
 
 
+# Return the dealer's move. Assuming stand on soft 17
+def dealerMove(dealerCards):
+	totals = countTotals(dealerCards)
+	if totals[0] < 17:
+		return "hit"
+	elif totals[1] <= 21:
+		return "stand"
+	else:
+		return "bust"
+
+
+# Returns either "dealer" or "player"
+def whoWins(playerCards, dealerCards):
+	playerTotals = countTotals(playerCards)
+	dealerTotals = countTotals(dealerCards)
+	playerFinal = 0
+	dealerFinal = 0
+	if playerTotals[0] <= 21:
+		playerFinal = playerTotals[0]
+	else:
+		playerFinal = playerTotals[1]
+	if dealerTotals[0] <= 21:
+		dealerFinal = dealerTotals[0]
+	else:
+		dealerFinal = dealerTotals[1]
+	if playerFinal > 21:
+		return "dealer"
+	elif dealerFinal > 21:
+		return "player"
+	elif playerFinal < dealerFinal:
+		return "dealer"
+	else:
+		return "player"
+
+
 # Play one game of Blackjack
 def playGame(bet):
     global shoe
@@ -180,7 +215,21 @@ def playGame(bet):
     elif move == "surrender":
     	playerMoney -= bet / 2
     elif move == "stand":
-    	pass # todo
+    	dmove = dealerMove(dealerCards)
+    	while dmove != "bust" and dmove != "stand":
+    		# dmove == "hit"
+    		dealerCards.append(shoe.pop())
+    		changeCount(dealerCards[-1])
+    		dmove = dealerMove(dealerCards)
+    	if dmove == "bust":
+    		# player wins
+    		playerMoney += bet
+    	else:
+    		# dmove == "stand"
+    		if whoWins(playerCards, dealerCards) == "player":
+    			playerMoney += bet
+    		else:
+    			playerMoney -= bet
 
 
 # returns the player's bet, based on the current card count
