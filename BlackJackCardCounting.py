@@ -29,6 +29,9 @@ playerInitialMoney = 10000
 baseBet = 100
 playerMoney = playerInitialMoney
 
+# set to true to see everything the player/dealer does.
+# set to false to only see final ($$) result.
+verbose = False
 
 # Modify the count based on the card seen
 def changeCount(card):
@@ -244,7 +247,9 @@ def whoWins(playerCards, dealerCards):
 
 # Play one game of Blackjack
 def playGame(bet):
-    print "-----------------------"
+    global verbose
+    if verbose:
+        print "-----------------------"
     global shoe
     global playerMoney
 
@@ -254,10 +259,11 @@ def playGame(bet):
     # dealer's first card is visible to the player
     dealerCards = [shoe.pop(), shoe.pop()]
 
-    print "player dealt",
-    print playerHands
-    print "dealer dealt",
-    print dealerCards
+    if verbose:
+        print "player dealt",
+        print playerHands
+        print "dealer dealt",
+        print dealerCards
 
     changeCount(playerHands[0][0])
     changeCount(playerHands[0][1])
@@ -269,7 +275,8 @@ def playGame(bet):
             move = playerMove(playerCards, dealerCards[0])
 
             while (playerHandsStatus[i] != "closed" and move != "bust" and move != "stand" and move != "surrender") and not (playerHandsStatus[i] == "open" and move == "double-stand"):
-            	print "player "+move
+            	if verbose:
+            	    print "player "+move
                 if move == "hit" or (playerHandsStatus[i]!="new" and move == "double-hit"):
                     playerCards.append(shoe.pop())
                     changeCount(playerCards[-1])
@@ -278,8 +285,9 @@ def playGame(bet):
                     playerCards.append(shoe.pop())
                     changeCount(playerCards[-1])
                     playerHandsStatus[i] = "closed"
-                    print "player now has",
-                    print playerHands
+                    if verbose:
+                        print "player now has",
+                        print playerHands
                     break
                 elif move == "split":
                     card1 = shoe.pop()
@@ -290,22 +298,25 @@ def playGame(bet):
                     playerHandsStatus.append("open")
                     playerCards.remove(playerCards[1])
                     playerCards.append(card2)
-                print "player now has",
-                print playerHands
+                if verbose:
+                    print "player now has",
+                    print playerHands
                 playerHandsStatus[i] = "open"
                 move = playerMove(playerCards, dealerCards[0])
             
             if playerHandsStatus[i] != "closed" and playerHandsStatus[i] != "stand":
                 if move == "bust":
-                    print "player bust! (",
-                    print playerCards,
-                    print ")"
+                    if verbose:
+                        print "player bust! (",
+                        print playerCards,
+                        print ")"
                     playerHandsStatus[i] = "closed"
                     playerMoney -= bet
                 elif move == "surrender":
-                    print "player surrender! (",
-                    print playerCards,
-                    print ")"
+                    if verbose:
+                        print "player surrender! (",
+                        print playerCards,
+                        print ")"
                     playerHandsStatus[i] = "closed"
                     playerMoney -= bet / 2
                 elif move == "stand" or move == "double-stand":
@@ -320,29 +331,33 @@ def playGame(bet):
         dealerCards.append(shoe.pop())
         changeCount(dealerCards[-1])
         dmove = dealerMove(dealerCards)
-
-	print "dealer "+dmove+" (",
-	print dealerCards,
-	print ")"
+    
+    if verbose:
+    	print "dealer "+dmove+" (",
+    	print dealerCards,
+    	print ")"
 
     for i in range(0,len(playerHands)):
         if playerHandsStatus[i] == "stand":
             if dmove == "bust":
                 # player wins
-                print "player wins! (",
-                print playerHands[i],
-                print ")"
+                if verbose:
+                    print "player wins! (",
+                    print playerHands[i],
+                    print ")"
                 playerMoney += bet
             else:
                 if whoWins(playerHands[i], dealerCards) == "player":
-                    print "player wins! (",
-    	            print playerHands[i],
-                    print ")"
+                    if verbose:
+                        print "player wins! (",
+                        print playerHands[i],
+                        print ")"
                     playerMoney += bet
                 else:
-                    print "player loses! (",
-    	            print playerHands[i],
-                    print ")"
+                    if verbose:
+                        print "player loses! (",
+                        print playerHands[i],
+                        print ")"
                     playerMoney -= bet
 
 
@@ -352,10 +367,6 @@ def playerBetBasedOnCount():
     global shoe
     global baseBet
     decksInShoe = round(float(len(shoe)) / float(52))
-    if decksInShoe == 0:
-        print shoe
-        print len(shoe)
-        exit()
     trueCount = round(float(count) / float(decksInShoe));
     if trueCount > 0:
         return baseBet * trueCount
