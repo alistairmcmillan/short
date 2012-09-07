@@ -126,9 +126,18 @@ def playerMoveSoft(playerTotalWithoutAce, dealerCard):
             return "hit"
 
 
+# returns card value; for purposes of knowing whether the player is allowed to split
+def cardValue(card):
+	if card <= 10:
+		return card
+	else:
+		# J,Q,K
+		return 10
+
+
 # Return the player move according to basic strategy (http://en.m.wikipedia.org/wiki/Blackjack#section_4)
 def playerMove(playerCards, dealerCard):
-    if len(playerCards) == 2 and playerCards[0][1] == playerCards[1][1]:
+    if len(playerCards) == 2 and cardValue(playerCards[0][1]) == cardValue(playerCards[1][1]):
         return playerMovePair(playerCards[0][1], dealerCard[1])
     else:
         totals = countTotals(playerCards)
@@ -219,9 +228,14 @@ def playGame(bet):
                     print playerHands
                     break
                 elif move == "split":
-                    playerHands.append([playerCards[1]])
+                    card1 = shoe.pop()
+                    card2 = shoe.pop()
+                    changeCount(card1)
+                    changeCount(card2)
+                    playerHands.append([playerCards[1], card1])
                     playerHandsStatus.append("open")
                     playerCards.remove(playerCards[1])
+                    playerCards.append(card2)
                 print "player now has",
                 print playerHands
                 move = playerMove(playerCards, dealerCards[0])
