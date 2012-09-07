@@ -22,7 +22,8 @@ count = 0
 penetrationLimit = round(0.25 * len(shoe))
 
 # Player's money and bets
-playerInitialMoney = 4227
+playerInitialMoney = 10000
+baseBet = 100
 playerMoney = playerInitialMoney
 
 
@@ -345,7 +346,14 @@ def playGame(bet):
 # returns the player's bet, based on the current card count
 def playerBetBasedOnCount():
     global count
-    return 27 # todo
+    global shoe
+    global baseBet
+    decksInShoe = round(float(len(shoe)) / float(52))
+    trueCount = round(float(count) / float(decksInShoe));
+    if trueCount > 0:
+        return baseBet * trueCount
+    else:
+        return baseBet
 
 
 ####
