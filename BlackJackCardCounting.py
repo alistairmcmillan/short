@@ -276,14 +276,20 @@ def playGame(bet):
     if playerTotals[0] == 21 and dealerTotals[0] != 21:
         # player has blackjack -> player wins 3 to 2
         playerHandsStatus[0] = ["bust"] # set hand to "bust" so it's ignored; money is adjusted here
+        if verbose:
+            print "player has blackjack"
         playerMoney += float(bet) * 1.5
     elif playerTotals[0] != 21 and dealerTotals[0] == 21:
         # dealer has blackjack -> player loses
         playerHandsStatus[0] = ["bust"] # set hand to "bust" so it's ignored; money is adjusted here
+        if verbose:
+            print "dealer has blackjack"
         playerMoney -= bet
     elif playerTotals[0] == dealerTotals[0] and playerTotals[0] == 21:
         # player & dealer both have blackjack -> push
         playerHandsStatus[0] = ["stand"]
+        if verbose:
+            print "player & dealer both have blackjack, push"
 
     while "open" in playerHandsStatus or "new" in playerHandsStatus:
         for i in range(0,len(playerHands)):
