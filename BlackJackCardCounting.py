@@ -53,189 +53,234 @@ def countTotals(playerCards):
 
 # Return the player move according to basic strategy (http://en.m.wikipedia.org/wiki/Blackjack#section_4)
 def playerMovePair(playerCard, dealerCard):
-	if playerCard == 1:
-	   return "split"
-	elif playerCard == 2 or playerCard == 3:
-		if dealerCard >=2 and dealerCard <=7:
-			return "split"
-		else:
-			return "hit"
-	elif playerCard == 4:
-		if dealerCard >=5 and dealerCard <=6:
-			return "split"
-		else:
-			return "hit"
-	elif playerCard == 5:
-		if dealerCard >=2 and dealerCard <=9:
-			return "double-hit"
-		else:
-			return "hit"
-	elif playerCard == 6:
-		if dealerCard >=2 and dealerCard <=6:
-			return "split"
-		else:
-			return "hit"
-	elif playerCard == 7:
-		if dealerCard >=2 and dealerCard <=7:
-			return "split"
-		else:
-			return "hit"
-	elif playerCard == 8:
-		return "split"
-	elif playerCard == 9:
-		if (dealerCard >=2 and dealerCard <=6) or (dealerCard >=8 and dealerCard <=9):
-			return "split"
-		else:
-			return "stand"
-	elif playerMovePair == 10 or playerMovePair == 11 or playerMovePair == 12 or playerMovePair == 13:
-		return "stand"
+    if playerCard == 1:
+       return "split"
+    elif playerCard == 2 or playerCard == 3:
+        if dealerCard >=2 and dealerCard <=7:
+            return "split"
+        else:
+            return "hit"
+    elif playerCard == 4:
+        if dealerCard >=5 and dealerCard <=6:
+            return "split"
+        else:
+            return "hit"
+    elif playerCard == 5:
+        if dealerCard >=2 and dealerCard <=9:
+            return "double-hit"
+        else:
+            return "hit"
+    elif playerCard == 6:
+        if dealerCard >=2 and dealerCard <=6:
+            return "split"
+        else:
+            return "hit"
+    elif playerCard == 7:
+        if dealerCard >=2 and dealerCard <=7:
+            return "split"
+        else:
+            return "hit"
+    elif playerCard == 8:
+        return "split"
+    elif playerCard == 9:
+        if (dealerCard >=2 and dealerCard <=6) or (dealerCard >=8 and dealerCard <=9):
+            return "split"
+        else:
+            return "stand"
+    elif playerCard == 10 or playerCard == 11 or playerCard == 12 or playerCard == 13:
+        return "stand"
 
 
 # Return the player move according to basic strategy (http://en.m.wikipedia.org/wiki/Blackjack#section_4)
 def playerMoveHard(playerTotal, dealerCard):
-	return "?" # todo
+    return "hit" # todo
 
 
 # Return the player move according to basic strategy (http://en.m.wikipedia.org/wiki/Blackjack#section_4)
 def playerMoveSoft(playerTotalWithoutAce, dealerCard):
-	if playerTotalWithoutAce >= 8:
-		return "stand"
-	elif playerTotalWithoutAce == 7:
-		if dealerCard == 2:
-			return "stand"
-		elif dealerCard >= 3 and dealerCard <= 6:
-			return "double-stand"
-		elif dealerCard == 7 or dealerCard == 8:
-			return "stand"
-		else:
-			return "hit"
-	elif playerTotalWithoutAce == 6:
-		if dealerCard == 2 or dealerCard >= 7:
-			return "hit"
-		else:
-			return "double-hit"
-	elif playerTotalWithoutAce == 4 or playerTotalWithoutAce == 5:
-		if dealerCard == 2 or dealerCard == 3 or dealerCard >= 7:
-			return "hit"
-		else:
-			return "double-hit"
-	elif playerTotalWithoutAce == 2 or playerTotalWithoutAce == 3:
-		if dealerCard == 5 or dealerCard == 6:
-			return "double-hit"
-		else:
-			return "hit"
+    if playerTotalWithoutAce >= 8:
+        return "stand"
+    elif playerTotalWithoutAce == 7:
+        if dealerCard == 2:
+            return "stand"
+        elif dealerCard >= 3 and dealerCard <= 6:
+            return "double-stand"
+        elif dealerCard == 7 or dealerCard == 8:
+            return "stand"
+        else:
+            return "hit"
+    elif playerTotalWithoutAce == 6:
+        if dealerCard == 2 or dealerCard >= 7:
+            return "hit"
+        else:
+            return "double-hit"
+    elif playerTotalWithoutAce == 4 or playerTotalWithoutAce == 5:
+        if dealerCard == 2 or dealerCard == 3 or dealerCard >= 7:
+            return "hit"
+        else:
+            return "double-hit"
+    elif playerTotalWithoutAce == 2 or playerTotalWithoutAce == 3:
+        if dealerCard == 5 or dealerCard == 6:
+            return "double-hit"
+        else:
+            return "hit"
 
 
 # Return the player move according to basic strategy (http://en.m.wikipedia.org/wiki/Blackjack#section_4)
 def playerMove(playerCards, dealerCard):
-    if len(playerCards) == 2 and playerCards[0][0] == playerCards[0][1]:
-    	return playerMovePair(playerCards[0][1], dealerCard[1])
+    if len(playerCards) == 2 and playerCards[0][1] == playerCards[1][1]:
+        return playerMovePair(playerCards[0][1], dealerCard[1])
     else:
         totals = countTotals(playerCards)
         if totals[1] > 21:
-        	return "bust"
+            return "bust"
         elif totals[0] != totals[1]:
-        	if totals[0] > 21:
-        		return playerMoveHard(totals[1], dealerCard[1])
-        	else:
-        		return playerMoveSoft(totals[0] - 11, dealerCard[1])
+            if totals[0] > 21:
+                return playerMoveHard(totals[1], dealerCard[1])
+            else:
+                return playerMoveSoft(totals[0] - 11, dealerCard[1])
         else:
-        	return playerMoveHard(totals[1], dealerCard[1])
+            return playerMoveHard(totals[1], dealerCard[1])
 
 
 # Return the dealer's move. Assuming stand on soft 17
 def dealerMove(dealerCards):
-	totals = countTotals(dealerCards)
-	if totals[0] < 17:
-		return "hit"
-	elif totals[1] <= 21:
-		return "stand"
-	else:
-		return "bust"
+    totals = countTotals(dealerCards)
+    if totals[0] < 17:
+        return "hit"
+    elif totals[1] <= 21:
+        return "stand"
+    else:
+        return "bust"
 
 
 # Returns either "dealer" or "player"
 def whoWins(playerCards, dealerCards):
-	playerTotals = countTotals(playerCards)
-	dealerTotals = countTotals(dealerCards)
-	playerFinal = 0
-	dealerFinal = 0
-	if playerTotals[0] <= 21:
-		playerFinal = playerTotals[0]
-	else:
-		playerFinal = playerTotals[1]
-	if dealerTotals[0] <= 21:
-		dealerFinal = dealerTotals[0]
-	else:
-		dealerFinal = dealerTotals[1]
-	if playerFinal > 21:
-		return "dealer"
-	elif dealerFinal > 21:
-		return "player"
-	elif playerFinal < dealerFinal:
-		return "dealer"
-	else:
-		return "player"
+    playerTotals = countTotals(playerCards)
+    dealerTotals = countTotals(dealerCards)
+    playerFinal = 0
+    dealerFinal = 0
+    if playerTotals[0] <= 21:
+        playerFinal = playerTotals[0]
+    else:
+        playerFinal = playerTotals[1]
+    if dealerTotals[0] <= 21:
+        dealerFinal = dealerTotals[0]
+    else:
+        dealerFinal = dealerTotals[1]
+    if playerFinal > 21:
+        return "dealer"
+    elif dealerFinal > 21:
+        return "player"
+    elif playerFinal < dealerFinal:
+        return "dealer"
+    else:
+        return "player"
 
 
 # Play one game of Blackjack
 def playGame(bet):
+    print "-----------------------"
     global shoe
     global playerMoney
 
-    playerCards = [shoe.pop(), shoe.pop()]
+    # player's hands
+    playerHands = [[shoe.pop(), shoe.pop()]]
+    playerHandsStatus = ["open"]
     # dealer's first card is visible to the player
     dealerCards = [shoe.pop(), shoe.pop()]
 
-    changeCount(playerCards[0])
-    changeCount(playerCards[1])
+    print "player dealt",
+    print playerHands
+    print "dealer dealt",
+    print dealerCards
+
+    changeCount(playerHands[0][0])
+    changeCount(playerHands[0][1])
     changeCount(dealerCards[0])
 
-    move = playerMove(playerCards, dealerCards[0])
-    while move != "bust" and move != "stand" and move != "surrender":
-    	if move == "hit":
-    		playerCards.append(shoe.pop())
-    		changeCount(playerCards[-1])
-    	elif move == "double-hit" or move == "double-stand":
-    		# assume doubling down is allowed
-    		bet *= 2
-    		playerCards.append(shoe.pop())
-    		changeCount(playerCards[-1])
-    		move = "stand"
-    		break
-    	elif move == "split":
-    		pass # todo
-    	move = playerMove(playerCards, dealerCards[0])
+    while "open" in playerHandsStatus:
+        for i in range(0,len(playerHands)):
+            playerCards = playerHands[i]
+            move = playerMove(playerCards, dealerCards[0])
 
-	# player now saw the dealer's second card
-	changeCount(dealerCards[1])
+            while playerHandsStatus[i] != "closed" and move != "bust" and move != "stand" and move != "surrender":
+            	print "player "+move
+                if move == "hit":
+                    playerCards.append(shoe.pop())
+                    changeCount(playerCards[-1])
+                elif move == "double-hit" or move == "double-stand":
+                    # assume doubling down is allowed
+                    bet *= 2
+                    playerCards.append(shoe.pop())
+                    changeCount(playerCards[-1])
+                    playerHandsStatus[i] = "closed"
+                    print "player now has",
+                    print playerHands
+                    break
+                elif move == "split":
+                    playerHands.append([playerCards[1]])
+                    playerHandsStatus.append("open")
+                    playerCards.remove(playerCards[1])
+                print "player now has",
+                print playerHands
+                move = playerMove(playerCards, dealerCards[0])
+            
+            if playerHandsStatus[i] != "closed" and playerHandsStatus[i] != "stand":
+                if move == "bust":
+                    print "player bust! (",
+                    print playerCards,
+                    print ")"
+                    playerHandsStatus[i] = "closed"
+                    playerMoney -= bet
+                elif move == "surrender":
+                    print "player surrender! (",
+                    print playerCards,
+                    print ")"
+                    playerHandsStatus[i] = "closed"
+                    playerMoney -= bet / 2
+                elif move == "stand":
+                	playerHandsStatus[i] = "stand"
 
-    if move == "bust":
-    	playerMoney -= bet
-    elif move == "surrender":
-    	playerMoney -= bet / 2
-    elif move == "stand":
-    	dmove = dealerMove(dealerCards)
-    	while dmove != "bust" and dmove != "stand":
-    		# dmove == "hit"
-    		dealerCards.append(shoe.pop())
-    		changeCount(dealerCards[-1])
-    		dmove = dealerMove(dealerCards)
-    	if dmove == "bust":
-    		# player wins
-    		playerMoney += bet
-    	else:
-    		# dmove == "stand"
-    		if whoWins(playerCards, dealerCards) == "player":
-    			playerMoney += bet
-    		else:
-    			playerMoney -= bet
+    # player now saw the dealer's second card
+    changeCount(dealerCards[1])
+
+    dmove = dealerMove(dealerCards)
+    while dmove != "bust" and dmove != "stand":
+        # dmove == "hit"
+        dealerCards.append(shoe.pop())
+        changeCount(dealerCards[-1])
+        dmove = dealerMove(dealerCards)
+
+	print "dealer "+dmove+" (",
+	print dealerCards,
+	print ")"
+
+    for i in range(0,len(playerHands)):
+        if playerHandsStatus[i] == "stand":
+            if dmove == "bust":
+                # player wins
+                print "player wins! (",
+                print playerHands[i],
+                print ")"
+                playerMoney += bet
+            else:
+                if whoWins(playerHands[i], dealerCards) == "player":
+                    print "player wins! (",
+    	            print playerHands[i],
+                    print ")"
+                    playerMoney += bet
+                else:
+                    print "player loses! (",
+    	            print playerHands[i],
+                    print ")"
+                    playerMoney -= bet
 
 
 # returns the player's bet, based on the current card count
 def playerBetBasedOnCount():
-	global count
-	return 27 # todo
+    global count
+    return 27 # todo
 
 
 ####
