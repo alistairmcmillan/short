@@ -308,9 +308,9 @@ def playGame(bet):
                     bet *= 2
                     playerCards.append(shoe.pop())
                     changeCount(playerCards[-1])
-                    playerHandsStatus[i] = "closed"
+                    playerHandsStatus[i] = "stand"
                     if verbose:
-                        print "player now has",
+                        print "player now has (force stand after double, bet now $" + repr(bet) + ")",
                         print playerHands
                     break
                 elif move == "split":
