@@ -254,6 +254,8 @@ def playGame(bet):
         print "-----------------------"
     global shoe
     global playerMoney
+    if verbose:
+        print "money : $" + repr(playerMoney) + " bet : $"+repr(bet)
 
     # player's hands
     playerHands = [[shoe.pop(), shoe.pop()]]
@@ -411,11 +413,15 @@ def playShoe():
     global shoe
     global count
     global decksInShoe
+    global playerMoney
+    global verbose
     count = 0
     shoe = singleDeck * decksInShoe
     shuffle(shoe)
     while len(shoe) > penetrationLimit:
         playGame(playerBetBasedOnCount())
+        if verbose:
+            print "money now : $"+repr(playerMoney)
 
 
 ####
@@ -438,4 +444,6 @@ gainOrLoss = "-"
 if playerMoney - playerInitialMoney > 0:
     gainOrLoss = "+"
 
+if verbose:
+    print "======================="
 print "Player's money = $" + repr(playerMoney) + " (" + gainOrLoss + "$" + repr(abs(playerInitialMoney - playerMoney)) + ")"
