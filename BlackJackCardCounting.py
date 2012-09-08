@@ -418,10 +418,13 @@ def playShoe():
     count = 0
     shoe = singleDeck * decksInShoe
     shuffle(shoe)
+    gameCount = 0
     while len(shoe) > penetrationLimit:
         playGame(playerBetBasedOnCount())
+        gameCount += 1
         if verbose:
             print "money now : $"+repr(playerMoney)
+    return gameCount
 
 
 ####
@@ -435,8 +438,9 @@ if len(argv)!=2:
 
 shoeCount = int(argv[1])
 x = 0
+gameCount = 0
 while x < shoeCount:
-    playShoe()
+    gameCount += playShoe()
     x += 1
 
 # Print out results
@@ -446,4 +450,7 @@ if playerMoney - playerInitialMoney > 0:
 
 if verbose:
     print "======================="
-print "Player's money = $" + repr(playerMoney) + " (" + gainOrLoss + "$" + repr(abs(playerInitialMoney - playerMoney)) + ")"
+moneyChange = abs(playerInitialMoney - playerMoney)
+print "Player's money = $" + repr(playerMoney) + " (" + gainOrLoss + "$" + repr(moneyChange) + " over "+repr(shoeCount)+" shoes and "+repr(gameCount)+" games)"
+print "That's "+gainOrLoss+"$"+ "%.2f" % (float(moneyChange) / float(shoeCount))+" on average per shoe, "+gainOrLoss+"$"+ "%.2f" % (float(moneyChange) / float(gameCount)) + " on average per game"
+print "(basic bet : $"+repr(baseBet)+")"
