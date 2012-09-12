@@ -156,6 +156,22 @@ namespace JD {
     }
 
 
+    Point &Point::operator-=(const Point other) {
+        this->x() -= other.x();
+        this->y() -= other.y();
+        this->z() -= other.z();
+        return *this;
+    }
+    
+    
+    Point &Point::operator+=(const Point other) {
+        this->x() += other.x();
+        this->y() += other.y();
+        this->z() += other.z();
+        return *this;
+    }
+
+
     Vector operator+(Vector u, Vector v) {
         u += v;
         return u;
@@ -165,6 +181,18 @@ namespace JD {
     Vector operator-(Vector u, Vector v) {
         u -= v;
         return u;
+    }
+    
+    
+    Point operator+(Point a, Point b) {
+        a += b;
+        return a;
+    }
+    
+    
+    Point operator-(Point a, Point b) {
+        a -= b;
+        return a;
     }
     
     

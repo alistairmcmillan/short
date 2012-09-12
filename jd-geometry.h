@@ -46,6 +46,10 @@ namespace JD {
         friend Point operator*(Point a, double f);
         friend Point operator*(double f, Point a);
         Point &operator*=(const double f);
+        friend Point operator+(Point a, Point b);
+        friend Point operator-(Point a, Point b);
+        Point &operator+=(const Point other);
+        Point &operator-=(const Point other);
         static double distance(Point a, Point b);
         static Point midpoint(Point a, Point b);
         Point translate(Vector v);
