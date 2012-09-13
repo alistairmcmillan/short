@@ -1,0 +1,6 @@
+#!/bin/sh
+# A simple script that simulates hitting the key specified on OS X
+# Based on http://stackoverflow.com/a/9418346/363078
+
+echo "tell application \"System Events\" to keystroke \"$1\"" | osascript
+
