@@ -60,6 +60,7 @@ namespace JD {
 
     public:
         Vector(double x, double y, double z);
+        Vector(Point p);
         Vector();
         ~Vector() {};
         double norm();

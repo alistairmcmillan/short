@@ -58,6 +58,10 @@ namespace JD {
     }
     
     
+    Vector::Vector(Point p):Point(p) {
+    }
+    
+    
     Vector::Vector():Point() {
     }
     
