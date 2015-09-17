@@ -186,11 +186,11 @@ def playerMoveSoft(playerTotalWithoutAce, dealerCard):
 
 # returns card value; for purposes of knowing whether the player is allowed to split
 def cardValue(card):
-	if card <= 10:
-		return card
-	else:
-		# J,Q,K
-		return 10
+    if card <= 10:
+        return card
+    else:
+        # J,Q,K
+        return 10
 
 
 # Return the player move according to basic strategy (http://en.m.wikipedia.org/wiki/Blackjack#section_4)
@@ -213,9 +213,10 @@ def playerMove(playerCards, dealerCard):
 # Return the dealer's move. Assuming stand on soft 17
 def dealerMove(dealerCards):
     totals = countTotals(dealerCards)
-    if totals[0] < 17:
+    trueTotal = totals[0] if totals[0] <= 21 else totals[1]
+    if trueTotal < 17:
         return "hit"
-    elif totals[1] <= 21:
+    elif trueTotal <= 21:
         return "stand"
     else:
         return "bust"
@@ -299,8 +300,8 @@ def playGame(bet):
             move = playerMove(playerCards, dealerCards[0])
 
             while (playerHandsStatus[i] != "closed" and move != "bust" and move != "stand" and move != "surrender") and not (playerHandsStatus[i] == "open" and move == "double-stand"):
-            	if verbose:
-            	    print "player "+move
+                if verbose:
+                    print "player "+move
                 if move == "hit" or (playerHandsStatus[i]!="new" and move == "double-hit"):
                     playerCards.append(shoe.pop())
                     changeCount(playerCards[-1])
@@ -344,7 +345,7 @@ def playGame(bet):
                     playerHandsStatus[i] = "closed"
                     playerMoney -= bet / 2
                 elif move == "stand" or move == "double-stand":
-                	playerHandsStatus[i] = "stand"
+                    playerHandsStatus[i] = "stand"
 
     # player now saw the dealer's second card
     changeCount(dealerCards[1])
@@ -357,9 +358,9 @@ def playGame(bet):
         dmove = dealerMove(dealerCards)
     
     if verbose:
-    	print "dealer "+dmove+" (",
-    	print dealerCards,
-    	print ")"
+        print "dealer "+dmove+" (",
+        print dealerCards,
+        print ")"
 
     for i in range(0,len(playerHands)):
         if playerHandsStatus[i] == "stand":
