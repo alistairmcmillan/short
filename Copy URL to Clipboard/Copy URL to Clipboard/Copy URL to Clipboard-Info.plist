@@ -36,8 +36,15 @@
 	<true/>
 	<key>CFBundleURLTypes</key>
 	<array>
-        <string>http</string>
-        <string>https</string>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>Web site URL</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>http</string>
+				<string>https</string>
+			</array>
+		</dict>
 	</array>
 </dict>
 </plist>
